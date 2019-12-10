@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Navigation from './app/navigation/Navigation';
-import {firebaseApp} from './app/utils/Firebase';
-
+import firebase from 'firebase/app';
+import {firebaseConfig} from './app/utils/Firebase.js';
 
 export default function App() {
-  
+  // inicio firebase
+  firebase.initializeApp(firebaseConfig);
+
   return (
     <Navigation></Navigation>
   );

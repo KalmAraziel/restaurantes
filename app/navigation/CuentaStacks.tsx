@@ -1,5 +1,5 @@
 import { createStackNavigator } from 'react-navigation-stack';
-import Cuenta from '../pages/Cuenta';
+import Cuenta from '../pages/MiCuenta/Cuenta';
 
 
 
