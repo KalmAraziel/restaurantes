@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import * as firebase from 'firebase';
 import { View, Text } from 'react-native';
+import Loading from '../../components/Loading';
 
 
 export default function Cuenta() {
@@ -14,9 +15,7 @@ export default function Cuenta() {
 
     if (login === null) {
         return (
-            <View>
-                <Text>Carando...</Text>
-            </View>
+            <Loading isVisible={true} ></Loading>
         )
     }
 
