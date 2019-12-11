@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import * as firebase from 'firebase';
 import { View, Text } from 'react-native';
 import Loading from '../../components/Loading';
+import UsuarioLogeado from './UsuarioLogeado';
+import Invitados from './Invitados';
 
 
 export default function Cuenta() {
@@ -18,18 +20,6 @@ export default function Cuenta() {
             <Loading isVisible={true} ></Loading>
         )
     }
-
-    if (login) {
-        return (
-            <View>
-                <Text>Usuario Logeado...</Text>
-            </View>
-        )
-    }
-
-    return (
-        <View>
-            <Text>Usuario no Logeado...</Text>
-        </View>
-    )
+  
+    return login ? <UsuarioLogeado /> : <Invitados />;
 }
