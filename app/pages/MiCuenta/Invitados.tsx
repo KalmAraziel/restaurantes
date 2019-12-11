@@ -1,8 +1,10 @@
 import React from 'react'
 import { StyleSheet ,View, Text, ScrollView, Image } from 'react-native'
 import { Button } from 'react-native-elements'
+import { withNavigation } from 'react-navigation'
 
-const Invitados = () => {
+function Invitados(props) {
+    const { navigation } = props;
     return (
         <ScrollView style={styles.viewBody} centerContent={true}>
             <Image source={require("../../../assets/img/user-guest.jpg")} 
@@ -14,7 +16,7 @@ const Invitados = () => {
                 ¿Como describirias tu mejor restaurante? 
                 Busca y visualiza los mejores
                 restaurantes de una  forma sencilla, vota cual te ha gustado más y comparte como fue 
-                tu experiencia.
+                tu experiencia
             </Text>
             
             <View style={styles.viewBtn}>
@@ -23,10 +25,8 @@ const Invitados = () => {
                     containerStyle={styles.btnContainer}
                     title="Ver tu perfil"
                     onPress= {
-                        () => {
-                            console.log("click!")
-                        }
-                     }
+                        () => navigation.navigate("Login")                        
+                    }
                 >
 
                 </Button>
@@ -34,6 +34,9 @@ const Invitados = () => {
         </ScrollView>
     )
 }
+
+
+export default withNavigation(Invitados);
 
 const styles = StyleSheet.create({
     viewBody: {
@@ -67,5 +70,3 @@ const styles = StyleSheet.create({
         width: "70%"
     }
 });
-
-export default Invitados

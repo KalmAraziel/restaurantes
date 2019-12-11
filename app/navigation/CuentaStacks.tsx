@@ -1,5 +1,7 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import Cuenta from '../pages/MiCuenta/Cuenta';
+import Login from '../pages/MiCuenta/Login';
+
 
 
 
@@ -10,6 +12,12 @@ const CuentaPageStacks = createStackNavigator({
       navigationOptions: () => ({
         title: `Mi cuenta`,
       }),
+    },
+    Login: {
+      screen: Login,
+      navigationOptions: () => ({
+        title: "Login"
+      })
     }
   });
 
