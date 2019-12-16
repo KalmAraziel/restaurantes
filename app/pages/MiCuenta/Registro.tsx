@@ -1,24 +1,33 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import RegistroForm from '../../components/Cuenta/RegistroForm';
-
+import Toast from 'react-native-easy-toast';
 
 const Registro = () => {
+    const toastRef = useRef();
     return (
         <KeyboardAwareScrollView>
             <Image source={require("../../../assets/img/5-tenedores-letras-icono-logo.png")}
                 style={styles.logo} resizeMode="contain"
             />
             <View style={styles.viewForm} >
-            <RegistroForm></RegistroForm>
-            </View>         
+            <RegistroForm toastRef={toastRef} ></RegistroForm>
+            </View>   
+            
+            <Toast                
+                ref={toastRef}
+                position="center"                                         
+            />    
+           
+                   
         </KeyboardAwareScrollView>
 
     )
 }
 
 const styles = StyleSheet.create({
+   
     logo: {
         width: "100%",
         height: 150,
