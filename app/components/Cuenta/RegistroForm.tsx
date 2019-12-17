@@ -1,42 +1,73 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, KeyboardAvoidingView,  } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView, Alert,  } from 'react-native'
 import { Input, Icon, Button } from 'react-native-elements';
 import { validarEmail } from '../../utils/Validaciones';
 import * as firebase from 'firebase';
+import Loading from '../Loading';
+import { withNavigation } from 'react-navigation';
+
+
 const RegistroForm = (props) => {
     
-    const { toastRef } = props;
+    const { toastRef, navigation } = props;
 
     const [hidePassword, setHidePassword] = useState(true);
     const [hideRepitPass, setHideRepitPass] = useState(true);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
     const [repeatPassWord, setRepeatPassWord] = useState("")
+    const [creandoCuenta, setCreandoCuenta] = useState(false);
+    
+    const Alerta = (titulo: string, creadro?: boolean) => {        
+        Alert.alert(
+            titulo,
+            '',
+            [
+                {
+                    text: 'Aceptar', 
+                    onPress: () => {
+                        if(creadro){
+                           
+                        } else {
+                            console.log('OK press');
+                        }
+                    }
+                }
+            ],
+            {cancelable: false});        
+    }
+
 
     const register = async () => {
+        setCreandoCuenta(true) ;
         if (!email || !password || !repeatPassWord) {
             console.log("Todos los campos son obligatorios"); 
-            toastRef.current.props.position = "center";                               
-            toastRef.current.show("Todos los campos son obligatorios");
-            
+            Alerta("Todos los campos son obligatorios");            
         } else {
             if (!validarEmail(email)){
-                console.log("el email no es correcto")
+                console.log()
+                Alerta("El Email no es correcto");
             } else {
                 if (password  !== repeatPassWord) {
                     console.log("contraseñas no son iguales")
+                    Alerta("Las contraseñas no son iguales");
                 } else {
                     console.log("Todo correcto: guardar registro")                     
                     await firebase.auth().createUserWithEmailAndPassword(email, password).then(
                         () => {
-                            console.log("Usuario creado correctamente ");
+                            console.log();
+                            setCreandoCuenta(false);
+                            navigation.navigate("Cuenta");
                         }
-                    ).catch(() => {
-                        console.log("Error al crear la cuenta");
+                    ).catch(() => {     
+                        setCreandoCuenta(false);               
+                        Alerta("Usuario creado correctamente");
                     });
                 }
             }
+
         }
+        setCreandoCuenta(false);
     };
 
     return (
@@ -101,6 +132,7 @@ const RegistroForm = (props) => {
                 buttonStyle= {styles.btnregister}
                 onPress={() => register() } 
             />
+            <Loading isVisible={creandoCuenta} > </Loading>
         </KeyboardAvoidingView >
     )
 }
@@ -132,4 +164,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default RegistroForm
+export default withNavigation( RegistroForm);

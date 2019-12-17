@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import RegistroForm from '../../components/Cuenta/RegistroForm';
-import Toast from 'react-native-easy-toast';
+//import Toast from 'react-native-easy-toast';
 
 const Registro = () => {
     const toastRef = useRef();
@@ -12,20 +12,13 @@ const Registro = () => {
                 style={styles.logo} resizeMode="contain"
             />
             <View style={styles.viewForm} >
-            <RegistroForm toastRef={toastRef} ></RegistroForm>
-            </View>   
-            
-            <Toast                
-                ref={toastRef}
-                position="center"                                         
-            />    
-           
+                <RegistroForm toastRef={toastRef} ></RegistroForm>
+            </View>
                    
         </KeyboardAwareScrollView>
 
     )
 }
-
 const styles = StyleSheet.create({
    
     logo: {

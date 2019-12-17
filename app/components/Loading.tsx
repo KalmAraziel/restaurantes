@@ -13,7 +13,7 @@ const Loading = (props) => {
         >
             <View style={style.view}>
                 <ActivityIndicator size="large" color="#00a680">                
-                    <Text style={style.text}>Cargando ...</Text>
+                    <Text style={style.text}></Text>
                 </ActivityIndicator>
             </View>
         </Overlay>
