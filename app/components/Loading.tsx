@@ -9,13 +9,10 @@ const Loading = (props) => {
             isVisible = {isVisible}
             windowBackgroundColor="rgba(0,0,0, .5)"
             overlayBackgroundColor="transparent"
-            overlayStyle = {style.overlay}
-        >
-            <View style={style.view}>
-                <ActivityIndicator size="large" color="#00a680">                
-                    <Text style={style.text}></Text>
-                </ActivityIndicator>
-            </View>
+            overlayStyle = {style.overlay}>         
+            <View style={[style.container, style.horizontal]}>               
+                <ActivityIndicator size="large" color="#00ff00" />               
+            </View>           
         </Overlay>
     )
 }
@@ -38,6 +35,16 @@ const style = StyleSheet.create({
         color: "#00a680",
         textTransform: "uppercase",
         marginTop: 10
+    },
+
+    container: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10
     }
 });
 

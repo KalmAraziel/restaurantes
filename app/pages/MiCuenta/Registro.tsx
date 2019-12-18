@@ -12,7 +12,7 @@ const Registro = () => {
                 style={styles.logo} resizeMode="contain"
             />
             <View style={styles.viewForm} >
-                <RegistroForm toastRef={toastRef} ></RegistroForm>
+                <RegistroForm></RegistroForm>
             </View>
                    
         </KeyboardAwareScrollView>
