@@ -55,7 +55,7 @@ const RegistroForm = (props) => {
                     console.log("Todo correcto: guardar registro")                     
                     await firebase.auth().createUserWithEmailAndPassword(email, password).then(
                         () => {
-                            console.log();
+                            
                             setCreandoCuenta(false);
                             navigation.navigate("Cuenta");
                         }

@@ -3,6 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Divider, Image } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
 import LoginForm from '../../components/Cuenta/LoginForm';
+import LoginFacebook from '../../components/Cuenta/LoginFacebook';
+import LoginGoogle from '../../components/Cuenta/LoginGoogle';
 
 const Login = (props) => {
     const {navigation} = props;
@@ -20,9 +22,7 @@ const Login = (props) => {
                 <CrearCuenta navigation= {navigation}></CrearCuenta>
             </View>
             <Divider style={styles.divider}></Divider>
-            <View style={styles.viewContainer}>
-                <Text>Login Facebook</Text>
-                <Text>Login Google</Text>
+            <View style={styles.viewContainer}>                
             </View> 
         </ScrollView>       
     )
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     divider: {
         backgroundColor: "#00a680",
-        marginBottom: 40,
+        marginBottom: 30,
         marginTop: 10,
         borderColor: "#00a680"
     },
