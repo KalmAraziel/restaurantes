@@ -9,7 +9,7 @@ import { withNavigation } from 'react-navigation';
 
 const RegistroForm = (props) => {
     
-    const { toastRef, navigation } = props;
+    const { navigation } = props;
 
     const [hidePassword, setHidePassword] = useState(true);
     const [hideRepitPass, setHideRepitPass] = useState(true);
@@ -61,7 +61,7 @@ const RegistroForm = (props) => {
                         }
                     ).catch(() => {     
                         setCreandoCuenta(false);               
-                        Alerta("Usuario creado correctamente");
+                        Alerta("Error al crear usuario");
                     });
                 }
             }

@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import { Divider, Image } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
+import LoginForm from '../../components/Cuenta/LoginForm';
 
 const Login = (props) => {
     const {navigation} = props;
@@ -15,7 +16,7 @@ const Login = (props) => {
             <View
                 style={styles.viewContainer}
             >
-                <Text>Form Login</Text>
+                <LoginForm></LoginForm>
                 <CrearCuenta navigation= {navigation}></CrearCuenta>
             </View>
             <Divider style={styles.divider}></Divider>
