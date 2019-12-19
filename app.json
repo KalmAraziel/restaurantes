@@ -14,7 +14,10 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.kalmaraziel.tenedores"
+      "package": "com.kalmaraziel.tenedores",
+      "permissions": [
+        "CAMERA_ROLL"
+      ]
     },
     "version": "1.0.0",
     "orientation": "portrait",
