@@ -9,6 +9,12 @@
       "android",
       "web"
     ],
+    "facebookScheme": "fb1085464221798791",
+    "facebookDisplayName": "tenedores",    
+    "ios": {
+      "bundleIdentifier": "com.kalmaraziel.tenedores",
+      "supportsTablet": true
+    },
     "android": {
       "package": "com.kalmaraziel.tenedores"
     },
@@ -26,9 +32,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
+    
     "description": ""
   }
 }

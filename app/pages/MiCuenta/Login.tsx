@@ -23,6 +23,7 @@ const Login = (props) => {
             </View>
             <Divider style={styles.divider}></Divider>
             <View style={styles.viewContainer}>                
+                <LoginFacebook></LoginFacebook>
             </View> 
         </ScrollView>       
     )
