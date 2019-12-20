@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { ListItem } from 'react-native-elements'
+import Modals from './Modals';
+import CambiarNombreForm from './Cuenta/CambiarNombreForm';
+import CambiarPasswordForm from './Cuenta/CambiarPasswordForm';
+import CambiarEmailForm from './Cuenta/CambiarEmailForm';
 
-const AccountOptions = () => {
+const AccountOptions = (props) => {
+    const { userInfo, setReloadData }= props;
+    const [isVisibleModal, setIsVisibleModal] = useState(false);
+    const [renderComponent, setRenderComponent] = useState(null);
+
     const menuOpt = [
         { 
             title: "Cambiar Nombre y Apellidos",
@@ -11,7 +19,7 @@ const AccountOptions = () => {
             iconColorLeft: "#ccc",
             iconNameRight: "chevron-right",
             iconColorRigth: "#ccc",
-            onPress: () => console.log("cambiar Nombre")
+            onPress: () => selectedComponent(0)
         },
         { 
             title: "Cambiar Email",
@@ -20,7 +28,7 @@ const AccountOptions = () => {
             iconColorLeft: "#ccc",
             iconNameRight: "chevron-right",
             iconColorRigth: "#ccc",
-            onPress: () => console.log("cambiar email")
+            onPress: () => selectedComponent(1)
         },
         { 
             title: "Cambiar Contraseña",
@@ -29,11 +37,31 @@ const AccountOptions = () => {
             iconColorLeft: "#ccc",
             iconNameRight: "chevron-right",
             iconColorRigth: "#ccc",
-            onPress: () => console.log("cambiar password")
+            onPress: () => selectedComponent(2)
         }
     ];
+
+    const selectedComponent = (index: number) => {
+        setIsVisibleModal(true);   
+        switch (index) {
+            case 0:
+                setRenderComponent(<CambiarNombreForm userInfo = {userInfo} setIsVisibleModal={setIsVisibleModal} setReloadData={setReloadData}></CambiarNombreForm>);
+                break;
+            case 1: 
+            setRenderComponent(<CambiarEmailForm userInfo = {userInfo} setIsVisibleModal={setIsVisibleModal} setReloadData={setReloadData}></CambiarEmailForm>);
+                break;
+            case 2:
+                setRenderComponent(<CambiarPasswordForm></CambiarPasswordForm>)
+                break;
+            default:
+                break;
+        }     
+    }
+
     return (
+
         <View>
+             
             {
                 menuOpt.map( (menu, index) => (
                     <ListItem 
@@ -50,6 +78,16 @@ const AccountOptions = () => {
                     />
                 ) )
             }
+            
+            {
+                renderComponent && (
+                    <Modals isVisible={isVisibleModal} setIsVisible = {setIsVisibleModal} >
+                        { renderComponent }
+                    </Modals>
+                )
+            }
+            
+            
         </View>
     )
 }

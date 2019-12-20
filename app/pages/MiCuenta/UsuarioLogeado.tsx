@@ -19,7 +19,7 @@ const UsuarioLogeado = () => {
     return (
         <View style= {styles.viewUserInfo}>
             <InfoUser userInfo={userInfo} setReloadData={setReloadData}></InfoUser>
-            <AccountOptions></AccountOptions>
+            <AccountOptions userInfo = {userInfo} setReloadData= {setReloadData}></AccountOptions>
             <Button
                 buttonStyle= {styles.btnCloseSession}
                 titleStyle= {styles.btnCloseSessionText}
