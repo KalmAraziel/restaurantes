@@ -51,7 +51,7 @@ const AccountOptions = (props) => {
             setRenderComponent(<CambiarEmailForm userInfo = {userInfo} setIsVisibleModal={setIsVisibleModal} setReloadData={setReloadData}></CambiarEmailForm>);
                 break;
             case 2:
-                setRenderComponent(<CambiarPasswordForm></CambiarPasswordForm>)
+                setRenderComponent(<CambiarPasswordForm  setIsVisibleModal={setIsVisibleModal}  ></CambiarPasswordForm>)
                 break;
             default:
                 break;
