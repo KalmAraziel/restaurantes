@@ -10,7 +10,7 @@ const CambiarNombreForm = (props) => {
     const [isLoading, setIsLoading] = useState(false);        
     
     
-    const updateName = () => {
+    const updateName = async () => {
         setError(null);
         if(!nombre ) {
             setError("El nombre del usuario es obligatorio");
@@ -20,11 +20,11 @@ const CambiarNombreForm = (props) => {
                 displayName: nombre
             }
 
-            firebase.auth().currentUser.updateProfile(update).then( () => {
-                setIsLoading(false);
-                setReloadData(true);
+            await firebase.auth().currentUser.updateProfile(update).then( () => {
+                setIsLoading(false);               
                 Alert.alert("Nombre Actualizado correctamente");
                 setIsVisibleModal(false);
+                setReloadData(true);
             }).catch(
                 () => {
                     setError("Error al actualizar nombre");
@@ -32,6 +32,7 @@ const CambiarNombreForm = (props) => {
                 }
             );
         }
+        setIsVisibleModal(false);
     }
     return (
         <View style={styles.viewContent}>
@@ -49,6 +50,7 @@ const CambiarNombreForm = (props) => {
                 errorMessage = {error}
                 
             ></Input>
+            
             <Button
                 title="Actualizar Nombre"
                 containerStyle={styles.containerBtn}

@@ -15,7 +15,7 @@ const CambiarEmailForm = (props) => {
     const [error, setError] = useState( { email: "", password: "" });
     const [isLoading, setIsLoading] = useState(false);        
     const [hidePassword, setHidePassword] = useState(true)
-    const updateEmail = () => {
+    const updateEmail = async () => {
         setError({ email: "", password: "" });
         
         console.log(email);
@@ -28,7 +28,7 @@ const CambiarEmailForm = (props) => {
             });
         } else {
             setIsLoading(true);
-            reLogin(password).then( () => {
+            await (password).then( () => {
                 
                 firebase.auth().currentUser.updateEmail(email).then(() => {
                     setIsLoading(false);
@@ -40,6 +40,7 @@ const CambiarEmailForm = (props) => {
                         email: "Error al cambiar el email",
                         password: ""
                     });
+                    setIsVisibleModal(false);
                 });
 
             }).catch(() => {
@@ -48,10 +49,11 @@ const CambiarEmailForm = (props) => {
                     password: "la contraseña no es valida",
                     email: ""
                 });
-
+                setIsVisibleModal(false);
                 setIsLoading(false);
             });
         }
+        setIsVisibleModal(false);
     }
     return (
         <View style= {styles.viewStyle}>
