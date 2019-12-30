@@ -14,10 +14,11 @@ const CambiarPasswordForm = (props) => {
     const [visiblePassword, setVisiblePassword] = useState(true)
     const [visibleNewPassword, setVisibleNewPassword] = useState(true)
     const [visibleNewPasswordRepeat, setVisibleNewPasswordRepeat] = useState(true)
+    
     const updatePassword = async () => {
         setError({ password: "", newPass: "", newPassRepeat: "" });       
         if (!password || !newPassword || !newPasswordRepeat) {
-            console.log("aqui!!! 1");
+           
             let objectError = { password: "", newPass: "" , newPassRepeat: ""};
             !password && (objectError.password = "No puede estar vacio");
             !newPassword && (objectError.newPass = "No puede estar vacio");
@@ -25,7 +26,7 @@ const CambiarPasswordForm = (props) => {
             setError(objectError);
         }         
         else {
-            console.log("aqui!!! 2");
+            
             if (newPassword !== newPasswordRepeat){
                 setError(
                     { 
