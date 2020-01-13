@@ -1,12 +1,40 @@
-import React, { Component } from 'react'
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { View, Text , StyleSheet} from 'react-native';
+import ActionButton from 'react-native-action-button';
+import * as firebase from 'firebase';
 
-export default class Restarantes extends Component {
-    render() {
-        return (
-            <View>
-                <Text>Estamos en restaurantes</Text>
-            </View>
-        )
-    }
+export default function Restarantes(props) {    
+    const {navigation} = props;
+    const [user, setUser] = useState(null);
+    
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(userInfo => {
+            setUser(userInfo);
+        })        
+    }, [])
+
+    return (
+        <View style={styles.viewBody}>
+            <Text>Estamos en restaurantes</Text>
+            {user && <AgregarRestauranteButton navigation={navigation}></AgregarRestauranteButton>}
+            
+        </View>
+    )
+    
 }
+
+function AgregarRestauranteButton(props) {
+    const {navigation} = props;
+    return (
+        <ActionButton
+            buttonColor="#00a680"
+            onPress={ () => navigation.navigate("AddRestaurant") }
+        />
+    )
+}
+
+const styles = StyleSheet.create({
+    viewBody: {
+        flex: 1
+    }
+});

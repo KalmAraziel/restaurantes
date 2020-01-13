@@ -11,7 +11,7 @@ const RestaurantPageStacks = createStackNavigator({
         title: `Restaurantes`,
       }),
     },
-    AddRestarantes: {      
+    AddRestaurant: {      
       screen: AddRestaurant,      
       navigationOptions: () => ({
         title: `Nuevo Restaurante`,
