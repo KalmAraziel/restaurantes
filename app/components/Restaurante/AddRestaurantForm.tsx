@@ -32,7 +32,10 @@ const AddRestaurantForm = (props) => {
             ToastAndroid.showWithGravity('Debes localizar el restaurant en el mapa', ToastAndroid.SHORT, ToastAndroid.CENTER);
         } else {
             setIsLoading(true);
-            
+            //ToastAndroid.showWithGravity('Correcto!', 0.5 , ToastAndroid.CENTER);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 2000);
         }
     }
 
