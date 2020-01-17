@@ -5,7 +5,7 @@ import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import MapView, { Marker } from 'react-native-maps';
 import Modals from '../Modals';
-
+import * as Location from 'expo-location';
 const WidthScreen = Dimensions.get("window").width;
 const AddRestaurantForm = (props) => {
     const { navigation } = props;
@@ -57,7 +57,32 @@ function ImagenRestaurant(props) {
 function Map(props) {
     const {isVisibleMap, setIsVisible, setLocationRestaurant} = props;
     const [location, setLocation] = useState(null);
-
+    useEffect(() => {
+        (async () => {
+            let resultPermissions = await Permissions.askAsync(Permissions.LOCATION);
+            const statusPermissions = resultPermissions.permissions.location.status;
+            if (statusPermissions !== "granted") {
+                Alert.alert("Error","Tienes que aceptar los permisos de localizacion para crear un restaurante.",[
+                    {
+                        text: "Aceptar",
+                        style: "cancel",
+                    }                        
+                ],);
+                
+            } else {
+                const loc = await Location.getCurrentPositionAsync({});
+                console.log(loc.coords);
+                setLocation({
+                    latitude: loc.coords.latitude,
+                    longitude: loc.coords.longitude,
+                    latitudeDelta: 0.001,
+                    longitudeDelta:0.001
+                });
+            }
+        })
+        
+        ()
+    }, [])
     return (
         <Modals 
             isVisible={isVisibleMap} 
@@ -74,7 +99,7 @@ function Map(props) {
                         <Marker
                             coordinate = {{
                                 latitude: location.latitude,
-                                longitude:  location.longitude,
+                                longitude: location.longitude,
                             }}
                             title=""
                             description=""

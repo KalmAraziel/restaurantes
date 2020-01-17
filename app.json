@@ -16,7 +16,8 @@
     "android": {
       "package": "com.kalmaraziel.tenedores",
       "permissions": [
-        "CAMERA_ROLL"
+        "CAMERA_ROLL",
+        "LOCATION"
       ]
     },
     "version": "1.0.0",
