@@ -41,6 +41,27 @@ function UploadImage(props){
         }        
     }
 
+    const removeImage = (imagen) => {
+        const imgs = imagesSelected;
+        Alert.alert(
+            "Eliminar Imagen",
+            "¿Estas seguro de eliminar la imagen?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel",
+                },
+
+                {
+                    text: "Eliminar",
+                    style: "default",
+                    onPress: () => setImagesSelected(imgs.filter(image => imagen !==  image))
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
     return (
         <View style={styles.viewImage}>
             { imagesSelected.length < 5 && (
@@ -57,7 +78,7 @@ function UploadImage(props){
                 <Avatar
                     rounded={true}
                     key={imageRestaurant}
-                    onPress={() => console.log("eliminando imagen")}                    
+                    onPress={ () => removeImage(imageRestaurant) }                    
                     containerStyle={styles.miniature}
                     overlayContainerStyle={styles.miniature}
                     source= {
