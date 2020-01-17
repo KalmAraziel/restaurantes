@@ -4,18 +4,42 @@ import { Icon, Image , Button, Avatar, Input} from 'react-native-elements';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 
+
+const WidthScreen = Dimensions.get("window").width;
 const AddRestaurantForm = (props) => {
     const { navigation } = props;
     const [imagesSelected, setImagesSelected] = useState([]);
 
     return (
         <ScrollView>
-            <Text>Agregar Restaurante Form</Text>
+            <ImagenRestaurant imagenRestaurant = {imagesSelected[0] } ></ImagenRestaurant>
             <UploadImage imagesSelected={imagesSelected}  setImagesSelected = {setImagesSelected}></UploadImage>
         </ScrollView>
     )
 }
+function ImagenRestaurant(props) {
+    const {imagenRestaurant} = props;
+    return (
+        <View style={styles.viewFoto}>
+            {imagenRestaurant ? (
+                <Image
+                    source= {{uri: imagenRestaurant}}
+                    style={{width: WidthScreen, height: 200}}
+                >
 
+                </Image>
+            )
+            : (
+                <Image
+                    source={ require("../../../assets/img/no-image.png") }
+                    style={{width: WidthScreen, height: 200}}
+                >
+                </Image>
+            )
+        }
+        </View>
+    );
+}
 function UploadImage(props){
     const {imagesSelected, setImagesSelected} = props;
     
@@ -92,6 +116,11 @@ function UploadImage(props){
 }
 
 const styles = StyleSheet.create({
+    viewFoto: {
+        alignItems: 'center',
+        height: 200,
+        marginBottom: 20
+    },
     viewImage: {
         flexDirection: 'row',
         marginLeft: 20,
@@ -121,5 +150,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: "#e3e3e3"
     }
+    
 });
 export default AddRestaurantForm
