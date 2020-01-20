@@ -40,7 +40,7 @@ const AddRestaurantForm = (props) => {
             setIsLoading(true);            
             //subir imagenes 
             uploadImages(imagesSelected).then(arrayImags => {
-                console.log('arrayImags: ',arrayImags);
+                //console.log('arrayImags: ',arrayImags);
                 // creo registro en firebase
                 db.collection("restaurants").add({
                     name: nombre,
