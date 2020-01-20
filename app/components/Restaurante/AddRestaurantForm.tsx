@@ -7,7 +7,13 @@ import MapView, { Marker } from 'react-native-maps';
 import Modals from '../Modals';
 import * as Location from 'expo-location';
 import {ToastAndroid} from 'react-native';
+import uuid from 'uuid/v4';
 
+// Firebase
+import firebase from "firebase/app";
+import "firebase/firestore";
+import {firebaseApp} from '../../utils/Firebase.js';
+const db = firebase.firestore(firebaseApp);
 
 const WidthScreen = Dimensions.get("window").width;
 
@@ -31,14 +37,48 @@ const AddRestaurantForm = (props) => {
         } else if (!locationRestaurant) {
             ToastAndroid.showWithGravity('Debes localizar el restaurant en el mapa', ToastAndroid.SHORT, ToastAndroid.CENTER);
         } else {
-            setIsLoading(true);
-            //ToastAndroid.showWithGravity('Correcto!', 0.5 , ToastAndroid.CENTER);
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 2000);
+            setIsLoading(true);            
+            //subir imagenes 
+            uploadImages(imagesSelected).then(arrayImags => {
+                console.log('arrayImags: ',arrayImags);
+                // creo registro en firebase
+                db.collection("restaurants").add({
+                    name: nombre,
+                    address: direccion,
+                    description: descripcion,
+                    location: locationRestaurant,
+                    images: arrayImags,
+                    rating: 0,
+                    ratingTotal: 0,
+                    quantityVoting: 0,
+                    createdAt: new Date(),
+                    createBy: firebaseApp.auth().currentUser.uid
+                }).then(() => {
+                    setIsLoading(false);
+                    navigation.navigate("Restarantes");
+                    ToastAndroid.showWithGravity('Restaurante creado correctamente!', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                }).catch(() =>  {
+                    setIsLoading(false);
+                    ToastAndroid.showWithGravity('Error al crear el Restaurante', ToastAndroid.SHORT, ToastAndroid.CENTER);                    
+                });
+            });
         }
     }
+    const uploadImages = async (imgs) => {
+        const imagesBlob = [];
+        await Promise.all(
+            imgs.map(async img => {
+                const resp = await fetch(img);
+                const blob = await resp.blob();                
+                const ref = firebase.storage().ref("/restaurant-images").child(uuid());
+                await ref.put(blob).then( result => {
+                    imagesBlob.push(result.metadata.name); // nombre img
+                });
+            })
+        );
 
+        return imagesBlob;
+    }
     return (
         <ScrollView>
             <ImagenRestaurant imagenRestaurant = {imagesSelected[0] } ></ImagenRestaurant>
@@ -96,7 +136,7 @@ function Map(props) {
                 ]);
                 
             } else {
-                const loc = await Location.getCurrentPositionAsync({});
+                const loc = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.High});
                 console.log(loc.coords);
                 setLocation({
                     latitude: loc.coords.latitude,

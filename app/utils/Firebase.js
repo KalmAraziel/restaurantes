@@ -1,4 +1,5 @@
-export const firebaseConfig = {
+import firebase from 'firebase/app';
+const firebaseConfig = {
   apiKey: "AIzaSyAOb3O4sSjZRDAPMMwtbsvVgNq1Dse_O2k",
   authDomain: "tenedores-f5416.firebaseapp.com",
   databaseURL: "https://tenedores-f5416.firebaseio.com",
@@ -9,5 +10,5 @@ export const firebaseConfig = {
   measurementId: "G-SC2QFY7Q22"
 };
 
-
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
