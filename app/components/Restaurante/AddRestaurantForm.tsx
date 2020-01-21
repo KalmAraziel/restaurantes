@@ -19,7 +19,7 @@ const WidthScreen = Dimensions.get("window").width;
 
 
 const AddRestaurantForm = (props) => {
-    const { navigation, setIsLoading } = props;
+    const { navigation, setIsLoading, setIsRealoadRestaurant } = props;
     const [imagesSelected, setImagesSelected] = useState([]);
     // estados
     const [nombre, setNombre] = useState("");
@@ -40,7 +40,7 @@ const AddRestaurantForm = (props) => {
             setIsLoading(true);            
             //subir imagenes 
             uploadImages(imagesSelected).then(arrayImags => {
-                //console.log('arrayImags: ',arrayImags);
+                ////console.log('arrayImags: ',arrayImags);
                 // creo registro en firebase
                 db.collection("restaurants").add({
                     name: nombre,
@@ -54,7 +54,8 @@ const AddRestaurantForm = (props) => {
                     createdAt: new Date(),
                     createBy: firebaseApp.auth().currentUser.uid
                 }).then(() => {
-                    setIsLoading(false);
+                    setIsRealoadRestaurant(true);
+                    setIsLoading(false);                    
                     navigation.navigate("Restarantes");
                     ToastAndroid.showWithGravity('Restaurante creado correctamente!', ToastAndroid.SHORT, ToastAndroid.CENTER);
                 }).catch(() =>  {
@@ -137,7 +138,7 @@ function Map(props) {
                 
             } else {
                 const loc = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.High});
-                console.log(loc.coords);
+                ////console.log(loc.coords);
                 setLocation({
                     latitude: loc.coords.latitude,
                     longitude: loc.coords.longitude,
@@ -209,20 +210,20 @@ function UploadImage(props){
         const resultPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         const resultPermissionCamera = resultPermission.permissions.cameraRoll.status;
         if(resultPermissionCamera === "denied") {
-            console.log("Acepta los permisos de la galeria");
+            //console.log("Acepta los permisos de la galeria");
         } else {
-            console.log("correcto");
+            //console.log("correcto");
             const result: any = await ImagePicker.launchImageLibraryAsync( {allowsEditing: true, aspect: [4,3]} );
             if (result.cancelled) {
-                console.log("has cerrado la galaria")
+                //console.log("has cerrado la galaria")
             } else { 
-                console.log("uri: ",result["uri"]);            
+                //console.log("uri: ",result["uri"]);            
                 if(imagesSelected.length === 0){
                     setImagesSelected( [result.uri ] );
                 } else {
                     setImagesSelected( [...imagesSelected, result.uri ]);
                 }                
-                console.log('imgs: ', imagesSelected);
+                //console.log('imgs: ', imagesSelected);
             }
         }        
     }

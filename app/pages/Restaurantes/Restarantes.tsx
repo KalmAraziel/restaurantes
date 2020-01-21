@@ -20,8 +20,8 @@ export default function Restarantes(props) {
     const [loading, setLoading] = useState(false);
     const [totalRestaurants, setTotalRestaurants] = useState(0);
     const [limite, setLimite] = useState(8);
+    const [isRealoadrestaurant, setIsRealoadRestaurant] = useState(false)
     
-    ////console.log("restaurantes:", restaurants);
     // efect usuario
     useEffect(() => {
         firebase.auth().onAuthStateChanged(userInfo => {
@@ -37,25 +37,51 @@ export default function Restarantes(props) {
             const restaurants = db.collection("restaurants").orderBy('createdAt', 'desc').limit(limite);
             
             await restaurants.get().then( response => {
-                ////console.log("restaurantssssssss: ",response.docs);
+                
                 setStartRestaurant(response.docs[response.docs.length -1]);
-                response.forEach( (doc) => {
-                    ////console.log('documentossssss:', doc.data());
+                response.forEach( (doc) => {                    
                     let rest = doc.data();
-                    rest["id"] = doc.id;      
-                    ////console.log("adasdadadsasd:",rest);             
-                    resulrestaurant.push(rest);
+                    rest["id"] = doc.id;                          
+                    resulrestaurant.push({"restaurante":rest});
                 });                                
-
                 setRestaurants(resulrestaurant);                
             });
-        })()
-    }, [])
+        })();
+        setIsRealoadRestaurant(false)
+    }, [isRealoadrestaurant])
+
+    const cargarMasRestaurantes = async () => {
+       const resultRestaurantes = [];
+       restaurants.length < totalRestaurants && setLoading(true);
+       
+       const restaurantesDb = db.collection("restaurants")
+                            .orderBy("createdAt", "desc")
+                            .startAfter(startRestaurant.data().createAt)
+                            .limit(limite);
+        await restaurantesDb.get().then(response => {
+            if (response.docs.length > 0) {
+                //llegan resto
+                startRestaurant(response.docs[response.docs.length -1]);
+
+            } else {
+                setLoading(false);
+            }
+
+            response.forEach( (doc) => {                    
+                let rest = doc.data();
+                rest["id"] = doc.id;                          
+                resultRestaurantes.push({"restaurante":rest});
+            });
+
+            setRestaurants([...restaurants, ...resultRestaurantes]);
+        });
+        
+    };
 
     return (
         <View style={styles.viewBody}>
-            <ListarRestaurant restaurants= {restaurants} isLoading= {loading}></ListarRestaurant>
-            {user && <AgregarRestauranteButton navigation={navigation}></AgregarRestauranteButton>}
+            <ListarRestaurant restaurants= {restaurants} isLoading= {loading} cargarMasRestaurantes = {cargarMasRestaurantes} navigation={navigation} ></ListarRestaurant>
+            {user && <AgregarRestauranteButton navigation={navigation} setIsRealoadRestaurant={setIsRealoadRestaurant}></AgregarRestauranteButton>}
             
         </View>
     )
@@ -63,11 +89,11 @@ export default function Restarantes(props) {
 }
 
 function AgregarRestauranteButton(props) {
-    const {navigation} = props;
+    const {navigation, setIsRealoadRestaurant} = props;
     return (
         <ActionButton
             buttonColor="#00a680"
-            onPress={ () => navigation.navigate("AddRestaurant") }
+            onPress={ () => navigation.navigate("AddRestaurant", {setIsRealoadRestaurant}) }
         />
     )
 }

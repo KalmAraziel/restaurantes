@@ -5,10 +5,11 @@ import AddRestaurantForm from '../../components/Restaurante/AddRestaurantForm';
 
 const AddRestaurant = (props) => {
     const { navigation } = props;
+    const {setIsRealoadRestaurant} = navigation.state.params;
     const [isLoading, setIsLoading] = useState(false)
     return (
         <View>
-            <AddRestaurantForm navigation = {navigation} setIsLoading = { setIsLoading }></AddRestaurantForm>
+            <AddRestaurantForm navigation = {navigation} setIsLoading = { setIsLoading } setIsRealoadRestaurant={setIsRealoadRestaurant}></AddRestaurantForm>
             <Loading  isVisible = {isLoading} />
         </View>
     )

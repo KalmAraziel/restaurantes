@@ -10040,6 +10040,11 @@ react-native-action-button@^2.8.5:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-banner-carousel@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-banner-carousel/-/react-native-banner-carousel-1.0.3.tgz#83d760233cd7496b595a3c1e51399ffcb16edcb2"
+  integrity sha1-g9dgIzzXSWtZWjweUTmf/LFu3LI=
+
 react-native-branch@~3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-3.0.1.tgz#5b07b61cbd290168cd3c3662e017ebe0f356d2ca"
