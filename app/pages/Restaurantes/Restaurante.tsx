@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import Carrusel from '../../components/Carrusel';
 import { Rating, Icon, ListItem } from 'react-native-elements';
 import Mapa from '../../components/Mapa';
+import ListaReviews from '../../components/Restaurante/ListaReviews';
 
 const Restaurante = (props) => {   
     const {navigation} = props;
@@ -36,6 +37,7 @@ const Restaurante = (props) => {
             >                    
             </TitleRestaurant>
             <RestaurantInfo location={restaurante.location} name={restaurante.name} address={restaurante.address}></RestaurantInfo>
+            <ListaReviews navigation={navigation} idRestaurant={restaurante.id} ></ListaReviews>
         </ScrollView>
 
     );
