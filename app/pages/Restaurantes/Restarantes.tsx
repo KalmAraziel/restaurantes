@@ -4,7 +4,7 @@ import ActionButton from 'react-native-action-button';
 import ListarRestaurant from '../../components/Restaurante/ListarRestaurant';
 
 // Firebase
-import {firebaseApp} from '../../utils/Firebase.js';
+import {firebaseApp} from '../../utils/Firebase';
 import firebase from "firebase/app";
 import "firebase/firestore";
 

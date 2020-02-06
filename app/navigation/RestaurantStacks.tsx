@@ -3,6 +3,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Restarantes from '../pages/Restaurantes/Restarantes';
 import AddRestaurant from '../pages/Restaurantes/AddRestaurant';
 import Restaurante from '../pages/Restaurantes/Restaurante';
+import AddReviewRestaurant from '../components/Restaurante/AddReviewRestaurant';
 
 const RestaurantPageStacks = createStackNavigator({
     // For each screen that you can navigate to, create a new entry like this:
@@ -23,7 +24,13 @@ const RestaurantPageStacks = createStackNavigator({
       navigationOptions: () => ({
         title: `Nuevo Restaurante`,
       }),
-    }
+    },    
+    AddReviewRestaurant: {      
+      screen: AddReviewRestaurant,      
+      navigationOptions: () => ({
+        title: `Nuevo Comentario`,
+      }),
+    },
   });
 
 export default RestaurantPageStacks;

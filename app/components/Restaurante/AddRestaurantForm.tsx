@@ -12,7 +12,7 @@ import uuid from 'uuid/v4';
 // Firebase
 import firebase from "firebase/app";
 import "firebase/firestore";
-import {firebaseApp} from '../../utils/Firebase.js';
+import {firebaseApp} from '../../utils/Firebase';
 const db = firebase.firestore(firebaseApp);
 
 const WidthScreen = Dimensions.get("window").width;

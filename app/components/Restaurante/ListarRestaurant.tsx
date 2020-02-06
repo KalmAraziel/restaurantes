@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, FlatList, ActivityIndicator , TouchableOpacity}
 import { Image } from 'react-native-elements';
 import * as firebase from 'firebase';
 import * as ImagePicker from 'expo-image-picker';
+import ListaReviews from './ListaReviews';
+
 
 const ListarRestaurant = (props) => {
     

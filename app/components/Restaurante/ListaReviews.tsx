@@ -16,7 +16,7 @@ const ListaReviews = (props) => {
                   name: "square-edit-outline",
                   color: "#00a680"               
                 }}
-                onPress= { () => console.log("ir al formulario") }
+                onPress= { () => navigation.navigate("AddReviewRestaurant", { idRestaurant }) }
             ></Button>
             <Text>Lista de comentarios ... </Text>
         </View>
