@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Dimensions, ScrollView} from 'react-native';
-import * as firebase from 'firebase';
+import { View, Text, StyleSheet, Dimensions, ScrollView, ToastAndroid} from 'react-native';
+
 import Carrusel from '../../components/Carrusel';
 import { Rating, Icon, ListItem } from 'react-native-elements';
 import Mapa from '../../components/Mapa';
 import ListaReviews from '../../components/Restaurante/ListaReviews';
+
+// Firebase
+import {firebaseApp} from '../../utils/Firebase';
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+const db = firebase.firestore(firebaseApp);
 
 const Restaurante = (props) => {   
     const {navigation} = props;
     const {restaurante} = navigation.state.params.restaurant.item;
     const [imagesRestaurant, setImagesRestaurant] = useState([]);
     const [rating, setRating] = useState(restaurante.rating)
-    
+    const [isFavorite, setIsFavorite] = useState(false);
+
     console.log("rating: ",rating);
 
     useEffect(() => {
@@ -28,8 +36,67 @@ const Restaurante = (props) => {
         })();
     }, []);
     
+    useEffect(() => {
+        db.collection("favorites")
+        .where("idRestaurant", "==" , restaurante.id)
+        .where("idUser", "==" , firebase.auth().currentUser.uid)
+        .get()
+        .then(resp => {
+            if (resp.docs.length  === 1) {
+                setIsFavorite(true);
+            }        
+        })
+    }, [])
+    const addFavorite = () => {
+                
+        const payload = {
+            idUser: firebase.auth().currentUser.uid,
+            idRestaurant: restaurante.id
+        };
+        db.collection("favorites").add(payload).then(resp => {
+            setIsFavorite(true);
+            ToastAndroid.showWithGravity('Restaurante agregegado a favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
+        }).catch(() => {
+            ToastAndroid.showWithGravity('Error al agregar el Restaurante a favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
+        });
+                
+    }
+
+    const removeFavorite = () => {
+        db.collection("favorites")
+        .where("idRestaurant", "==" , restaurante.id)
+        .where("idUser", "==" , firebase.auth().currentUser.uid)
+        .get().then(resp => {
+            resp.forEach(doc => {
+                const idFavorite = doc.id;
+                db.collection("favorites")
+                .doc(idFavorite)
+                .delete().then( () => {
+                    setIsFavorite(false);
+                    ToastAndroid.showWithGravity('Restaurante removido de favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                }).catch(() => {
+                    ToastAndroid.showWithGravity('Error al remover el Restaurante de favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                });
+            });
+        })
+
+
+        console.log("remove  fav");
+        setIsFavorite(false);
+    }
+
     return (
-        <ScrollView style={styles.viewBody}>            
+        <ScrollView style={styles.viewBody}>     
+            <View style={styles.viewFav}>
+                <Icon
+                    type="material-community"
+                    name={ isFavorite ? "heart": "heart-outline"} 
+                    onPress= { isFavorite ? removeFavorite : addFavorite  }
+                    color={isFavorite? "#00a680": "#000"}
+                    size={35}
+                    underlayColor="transparent"
+                ></Icon>
+            </View>       
             <Carrusel arrayImages={imagesRestaurant} alto={200} ancho={Dimensions.get("window").width}></Carrusel>
             <TitleRestaurant
                 name={restaurante.name} 
@@ -96,6 +163,18 @@ function RestaurantInfo(props) {
 
 
 const styles = StyleSheet.create({
+    viewFav: {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        zIndex: 2,
+        backgroundColor: "#fff",
+        borderBottomLeftRadius: 15,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 15,
+        paddingRight: 5
+    },
     viewBody:{
         flex: 1
     },

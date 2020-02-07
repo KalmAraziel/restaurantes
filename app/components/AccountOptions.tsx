@@ -10,7 +10,7 @@ const AccountOptions = (props) => {
     const { userInfo, setReloadData }= props;
     const [isVisibleModal, setIsVisibleModal] = useState(false);
     const [renderComponent, setRenderComponent] = useState(null);
-    
+
     const menuOpt = [
         { 
             title: "Cambiar Nombre y Apellidos",
