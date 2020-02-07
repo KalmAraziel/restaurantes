@@ -11,7 +11,7 @@ const db = firebase.firestore(firebaseApp);
 
 export default function AddReviewRestaurant(props) {
     const { navigation } = props;
-    const {idRestaurant} = navigation.state.params;
+    const {idRestaurant, setReviewsReload} = navigation.state.params;
     const [rating, setRating] = useState(null);
     const [titulo, setTitulo] = useState("");
     const [comentario, setComentario] = useState("");
@@ -57,6 +57,7 @@ export default function AddReviewRestaurant(props) {
             const ratingResult = ratingTotal / quantityVoting;
             restRef.update({rating: ratingResult, ratingTotal, quantityVoting}).then(() => {
                 setIsVisible(false);
+                setReviewsReload(true);
                 navigation.goBack();
                 ToastAndroid.showWithGravity('Comentario guardado correctamente', ToastAndroid.SHORT, ToastAndroid.CENTER);
             });

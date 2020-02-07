@@ -10,16 +10,17 @@ const Restaurante = (props) => {
     const {navigation} = props;
     const {restaurante} = navigation.state.params.restaurant.item;
     const [imagesRestaurant, setImagesRestaurant] = useState([]);
+    const [rating, setRating] = useState(restaurante.rating)
+    
+    console.log("rating: ",rating);
 
     useEffect(() => {
         const arrayUrl = [];
         (async () => {
             await Promise.all(
                 restaurante.images.map(async image => {                    
-                    await firebase.storage().ref(`restaurant-images/${ image }`).getDownloadURL().then(result => {        
-                        console.log("result:", result);
-                        arrayUrl.push(result);
-                        console.log('imagenes:', imagesRestaurant);
+                    await firebase.storage().ref(`restaurant-images/${ image }`).getDownloadURL().then(result => {                                
+                        arrayUrl.push(result);                       
                     });
                 })
             );
@@ -33,11 +34,11 @@ const Restaurante = (props) => {
             <TitleRestaurant
                 name={restaurante.name} 
                 description={restaurante.description} 
-                rating={restaurante.rating}
+                rating={rating}
             >                    
             </TitleRestaurant>
             <RestaurantInfo location={restaurante.location} name={restaurante.name} address={restaurante.address}></RestaurantInfo>
-            <ListaReviews navigation={navigation} idRestaurant={restaurante.id} ></ListaReviews>
+            <ListaReviews navigation={navigation} idRestaurant={restaurante.id} setRating= {setRating} ></ListaReviews>
         </ScrollView>
 
     );
