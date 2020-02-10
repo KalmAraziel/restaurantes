@@ -9,7 +9,6 @@ const CambiarNombreForm = (props) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);        
     
-    
     const updateName = async () => {
         setError(null);
         if(!nombre ) {
@@ -48,9 +47,7 @@ const CambiarNombreForm = (props) => {
                     color: "#c2c2c2"
                 }}
                 errorMessage = {error}
-                
-            ></Input>
-            
+            />            
             <Button
                 title="Actualizar Nombre"
                 containerStyle={styles.containerBtn}

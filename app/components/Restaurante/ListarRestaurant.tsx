@@ -8,8 +8,7 @@ import ListaReviews from './ListaReviews';
 
 const ListarRestaurant = (props) => {
     
-    const {restaurants, isLoading, cargarMasRestaurantes, navigation} = props;        
-    
+    const {restaurants, isLoading, cargarMasRestaurantes, navigation} = props;           
     return (
         <View>
             {   restaurants ? 
@@ -36,10 +35,10 @@ const ListarRestaurant = (props) => {
 }
 
 function Restaurant(props) {
-    const {restaurant, navigation} = props;    
+    const {restaurant, navigation} = props;       
     const {name, address, description, images} = restaurant.item.restaurante;
     const [imageRestaurant, setImageRestaurant] = useState(null);
-    //console.log("images:", images);
+    
     useEffect(() => {
         const image = images[0];
         firebase.storage().ref(`restaurant-images/${ image }`).getDownloadURL().then(result => {        
@@ -48,7 +47,7 @@ function Restaurant(props) {
     }, [])
 
     return (
-        <TouchableOpacity onPress={ () => { navigation.navigate("Restaurante", {restaurant}) } } >
+        <TouchableOpacity onPress={ () => { navigation.navigate("Restaurante", {restaurante: restaurant.item.restaurante}) } } >
             <View style={styles.viewRestaurant}>
                 <View style={styles.viewRestoImg}>
                     <Image 

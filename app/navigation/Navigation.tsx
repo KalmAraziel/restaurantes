@@ -22,7 +22,6 @@ const NavigationStacks = createBottomTabNavigator(
                             type="material-community"
                             name="near-me" 
                             size={22} color={tintColor} />                        
-                        
                     )
                 }
             })
@@ -33,8 +32,7 @@ const NavigationStacks = createBottomTabNavigator(
                 tabBarLabel: "Ranking",
                 tabBarIcon: ( { tintColor } ) => {
                     return (                        
-                        <Icon  type="material-community" name="star-outline" size={22} color={tintColor} />                        
-                        
+                        <Icon  type="material-community" name="star-outline" size={22} color={tintColor} /> 
                     )
                 }
             })
@@ -45,8 +43,7 @@ const NavigationStacks = createBottomTabNavigator(
                 tabBarLabel: "Buscar",
                 tabBarIcon: ( { tintColor } ) => {
                     return (                        
-                        <Icon  name="search" size={22} color={tintColor} />                        
-                        
+                        <Icon  name="search" size={22} color={tintColor} />
                     )
                 }
             })
@@ -58,8 +55,7 @@ const NavigationStacks = createBottomTabNavigator(
                 tabBarLabel: "Perfil",
                 tabBarIcon: ( { tintColor } ) => {
                     return (                        
-                        <Icon type="material-community" name="home-outline" size={22} color={tintColor} />                        
-                        
+                        <Icon type="material-community" name="home-outline" size={22} color={tintColor} />                                                
                     )
                 }
             })
@@ -70,8 +66,7 @@ const NavigationStacks = createBottomTabNavigator(
                 tabBarLabel: "Favoritos",
                 tabBarIcon: ( { tintColor } ) => {
                     return (                        
-                        <Icon type="material-community"  name="heart-outline" size={22} color={tintColor} />                        
-                        
+                        <Icon type="material-community"  name="heart-outline" size={22} color={tintColor} />                                                
                     )
                 }
             })
@@ -84,7 +79,6 @@ const NavigationStacks = createBottomTabNavigator(
             inactiveTintColor: "#646464",
             activeTintColor: "#00a680"
         }
-
     }
 );
 

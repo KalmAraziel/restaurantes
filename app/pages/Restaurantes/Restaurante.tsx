@@ -15,12 +15,11 @@ const db = firebase.firestore(firebaseApp);
 
 const Restaurante = (props) => {   
     const {navigation} = props;
-    const {restaurante} = navigation.state.params.restaurant.item;
+   
+    const {restaurante} = navigation.state.params;    
     const [imagesRestaurant, setImagesRestaurant] = useState([]);
     const [rating, setRating] = useState(restaurante.rating)
-    const [isFavorite, setIsFavorite] = useState(false);
-
-    console.log("rating: ",rating);
+    const [isFavorite, setIsFavorite] = useState(false);    
 
     useEffect(() => {
         const arrayUrl = [];
@@ -47,8 +46,8 @@ const Restaurante = (props) => {
             }        
         })
     }, [])
-    const addFavorite = () => {
-                
+
+    const addFavorite = () => {   
         const payload = {
             idUser: firebase.auth().currentUser.uid,
             idRestaurant: restaurante.id
@@ -67,7 +66,7 @@ const Restaurante = (props) => {
         .where("idRestaurant", "==" , restaurante.id)
         .where("idUser", "==" , firebase.auth().currentUser.uid)
         .get().then(resp => {
-            resp.forEach(doc => {
+            resp.forEach( doc => {
                 const idFavorite = doc.id;
                 db.collection("favorites")
                 .doc(idFavorite)
@@ -80,8 +79,6 @@ const Restaurante = (props) => {
             });
         })
 
-
-        console.log("remove  fav");
         setIsFavorite(false);
     }
 
@@ -152,9 +149,7 @@ function RestaurantInfo(props) {
                         title= {item.text}
                         leftIcon={{name: item.iconName, type: item.iconType , color: "#00a680"}}
                         containerStyle={styles.containerListItem}
-                    >
-
-                    </ListItem>
+                    />                    
                 ))
             }
         </View>

@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import * as firebase from 'firebase';
 import { Input, Button } from 'react-native-elements';
-import { reLogin } from '../../utils/Api';
-import { validarEmail } from '../../utils/Validaciones';
-interface IError {
-    email?: string;
-    password?: string
-}
+// import { reLogin } from '../../utils/Api';
+// import { validarEmail } from '../../utils/Validaciones';
+
 const CambiarEmailForm = (props) => {    
     const {userInfo, setIsVisibleModal, setReloadData } = props;
     const [email, setEmail] = useState(null);
@@ -16,11 +13,7 @@ const CambiarEmailForm = (props) => {
     const [isLoading, setIsLoading] = useState(false);        
     const [hidePassword, setHidePassword] = useState(true)
     const updateEmail = async () => {
-        setError({ email: "", password: "" });
-        
-        console.log(email);
-        console.log( userInfo["email"]);
-
+        setError({ email: "", password: "" });                
         if (!email || email === userInfo["email"]) {
             setError({
                 email: "El email no puede ser igual o vacio",
@@ -43,8 +36,7 @@ const CambiarEmailForm = (props) => {
                     setIsVisibleModal(false);
                 });
 
-            }).catch(() => {
-                console.log("error");
+            }).catch(() => {                
                 setError({
                     password: "la contraseña no es valida",
                     email: ""
@@ -55,6 +47,7 @@ const CambiarEmailForm = (props) => {
         }
         setIsVisibleModal(false);
     }
+
     return (
         <View style= {styles.viewStyle}>
             <Input 
@@ -68,7 +61,7 @@ const CambiarEmailForm = (props) => {
                     color: "#c2c2c2"
                 }}
                 errorMessage= {error.email}
-            ></Input>
+            />
             <Input 
                 containerStyle={styles.input}
                 placeholder="Contraseña"
@@ -81,7 +74,7 @@ const CambiarEmailForm = (props) => {
                     onPress: () => setHidePassword(!hidePassword)
                 }}
                 errorMessage= {error.password}
-            ></Input>
+            />
             <Button
                 title="Actualizar Email"
                 containerStyle={styles.containerBtn}
@@ -92,27 +85,26 @@ const CambiarEmailForm = (props) => {
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     viewStyle: {
         alignItems: 'center',
         paddingBottom: 10,
         paddingTop: 10
     },
-
     input:{
         marginBottom: 10,
         marginTop: 10
         
     },
-
     containerBtn:{
         marginTop:20,
         width:"75%"
 
     },
-
     btnStyle:{
         backgroundColor:"#00a680"
     }
 });
+
 export default CambiarEmailForm

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert} from 'react-native'
 import { Input, Button } from 'react-native-elements';
 import { reLogin } from '../../utils/Api';
 import * as firebase from 'firebase';
+
 const CambiarPasswordForm = (props) => {
     const { setIsVisibleModal } = props;
     const [password, setPassword] = useState("")
