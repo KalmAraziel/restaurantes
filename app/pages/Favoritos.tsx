@@ -1,6 +1,8 @@
 import React, {useState, useEffect , useRef} from 'react'
 import { StyleSheet, View, ActivityIndicator, TouchableOpacity, FlatList, Text, Alert, ToastAndroid } from 'react-native';
-import { Image, Icon, } from 'react-native-elements';
+import { Image, Icon, Button } from 'react-native-elements';
+import { NavigationEvents } from 'react-navigation';
+
 // Components 
 import Loading from '../components/Loading';
 
@@ -11,6 +13,7 @@ import "firebase/firestore";
 import { firebaseApp } from '../utils/Firebase';
 
 
+
 const db = firebase.firestore(firebaseApp);
 
 export default function Favoritos(props) {
@@ -19,33 +22,36 @@ export default function Favoritos(props) {
     const [restaurants, setRestaurants] = useState([]);
     const [reloadRestourant, setReloadRestourant] = useState(false);
     const [isVisibleLoading, setIsVisibleLoading] = useState(false);
+    const [userLogin, setUserLogin] = useState(false);    
+    firebase.auth().onAuthStateChanged(use => {
+        use ? setUserLogin(true) : setUserLogin(false) ;
+    });
 
-    //ToastAndroid.showWithGravity('Todos los campos son obligatorios', ToastAndroid.SHORT, ToastAndroid.CENTER);
-
-   
     useEffect(  ()  => {
-       const idUser = firebase.auth().currentUser.uid;      
-       db.collection("favorites")
-       .where("idUser", "==" , idUser)
-       .get()
-       .then(response => {
-           const idResturants =[]; 
-           response.forEach(doc => {
-            idResturants.push(doc.data().idRestaurant);
-           });
-           getDataRestaurant(idResturants).then( (response) => {
-            const arrayRestos = [];
-            response.forEach(doc => {
-                let restaurant = doc.data();
-                restaurant.id =  doc.id;
-                arrayRestos.push(restaurant);
-                setRestaurants(arrayRestos);
+        if(userLogin) {
+            const idUser = firebase.auth().currentUser.uid;      
+            db.collection("favorites")
+            .where("idUser", "==" , idUser)
+            .get()
+            .then(response => {
+                const idResturants =[]; 
+                response.forEach(doc => {
+                    idResturants.push(doc.data().idRestaurant);
+                });
+                getDataRestaurant(idResturants).then( (response) => {
+                    const arrayRestos = [];
+                    response.forEach(doc => {
+                        let restaurant = doc.data();
+                        restaurant.id =  doc.id;
+                        arrayRestos.push(restaurant);
+                        setRestaurants(arrayRestos);
+                    });
+
+                });
             });
-
-           });
-       });
-
-       setReloadRestourant(false);
+            
+        }
+        setReloadRestourant(false);     
     }, [reloadRestourant]);
 
 
@@ -60,8 +66,17 @@ export default function Favoritos(props) {
         return Promise.all(arrayRestaurant);
     };
 
+    if(!userLogin) {
+        return (
+            <NotLogger setReloadRestourant={setReloadRestourant} navigation={navigation} />
+        )
+    }
+
+    if ( restaurants.length === 0 )  return <NotFoundRestaurants setReloadRestourant={setReloadRestourant} /> ;
+
     return (
-        <View>
+        <View style={styles.viewBody}>
+            <NavigationEvents onWillFocus={ () => setReloadRestourant(true) } />            
             {restaurants ? (
                 <FlatList
                     data={restaurants}
@@ -124,15 +139,16 @@ function Restaurant(props) {
     };
 
     const removeFavorite = () => {
-        console.log("eliminado... ");
+        
         setIsVisibleLoading(true);
-        console.log("id:", id);
+        
+
         db.collection("favorites")
         .where("idRestaurant", "==", id )
         .where("idUser", "==", firebase.auth().currentUser.uid)
         .get()
         .then(resp => {
-            console.log("resp: ", resp);
+            
             resp.forEach(element => {
                 const idCollectionFav = element.id;
                 db.collection("favorites").doc(idCollectionFav).delete().then(() => {
@@ -169,13 +185,47 @@ function Restaurant(props) {
                     size={40}
                     underlayColor="transparent"
                 >
-
                 </Icon>
             </View>
         </View>
     )
+
 }
 
+
+function NotFoundRestaurants(props) {
+    const {setReloadRestourant} = props;
+    return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <NavigationEvents onWillFocus={ () => setReloadRestourant(true) } />
+            <Icon type="material-community" name="alert-outline" size={50}></Icon>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                No tienes restaurantes favoritos.
+            </Text>
+        </View>
+    )
+}
+
+
+function NotLogger(props) {
+    const {setReloadRestourant, navigation} = props;
+    return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <NavigationEvents onWillFocus={ () => setReloadRestourant(true) } />
+            <Icon type="material-community" name="alert-outline" size={50}></Icon>
+            <Text style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>
+                Necesitas estar logeado para ver esta sección.
+            </Text>
+            <Button
+                title="Ir a l login"
+                onPress={() => navigation.navigate("Login")}
+                containerStyle={{marginTop: 20, width: "80%"}}
+                buttonStyle={{backgroundColor: "#00a680"}}
+
+            ></Button>
+        </View>
+    )
+}
 const styles = StyleSheet.create({
     viewBody: {
         flex: 1,

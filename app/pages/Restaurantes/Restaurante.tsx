@@ -20,6 +20,12 @@ const Restaurante = (props) => {
     const [imagesRestaurant, setImagesRestaurant] = useState([]);
     const [rating, setRating] = useState(restaurante.rating)
     const [isFavorite, setIsFavorite] = useState(false);    
+    const [userLogger, setUserLogger] = useState(false);
+    
+    firebase.auth().onAuthStateChanged(user => {
+        user ? setUserLogger(true) : setUserLogger(false);
+    });
+
 
     useEffect(() => {
         const arrayUrl = [];
@@ -36,29 +42,35 @@ const Restaurante = (props) => {
     }, []);
     
     useEffect(() => {
-        db.collection("favorites")
-        .where("idRestaurant", "==" , restaurante.id)
-        .where("idUser", "==" , firebase.auth().currentUser.uid)
-        .get()
-        .then(resp => {
-            if (resp.docs.length  === 1) {
-                setIsFavorite(true);
-            }        
-        })
+        if (userLogger) {
+            db.collection("favorites")
+            .where("idRestaurant", "==" , restaurante.id)
+            .where("idUser", "==" , firebase.auth().currentUser.uid)
+            .get()
+            .then(resp => {
+                if (resp.docs.length  === 1) {
+                    setIsFavorite(true);
+                }        
+            })
+        }
+        
     }, [])
 
     const addFavorite = () => {   
-        const payload = {
-            idUser: firebase.auth().currentUser.uid,
-            idRestaurant: restaurante.id
-        };
-        db.collection("favorites").add(payload).then(resp => {
-            setIsFavorite(true);
-            ToastAndroid.showWithGravity('Restaurante agregegado a favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
-        }).catch(() => {
-            ToastAndroid.showWithGravity('Error al agregar el Restaurante a favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
-        });
-                
+        if(!userLogger) {
+            ToastAndroid.showWithGravity('Inicia sesion para agregar a favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
+        } else {
+            const payload = {
+                idUser: firebase.auth().currentUser.uid,
+                idRestaurant: restaurante.id
+            };
+            db.collection("favorites").add(payload).then(resp => {
+                setIsFavorite(true);
+                ToastAndroid.showWithGravity('Restaurante agregegado a favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            }).catch(() => {
+                ToastAndroid.showWithGravity('Error al agregar el Restaurante a favoritos.', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            });
+        }                    
     }
 
     const removeFavorite = () => {
