@@ -9,13 +9,12 @@ import ListTopRestaurants from '../components/Ranking/ListTopRestaurants';
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { firebaseApp } from '../utils/Firebase';
-
-
 const db = firebase.firestore(firebaseApp);
 
 export default function TopRestaurantes(props) {
     const { navigation } = props;
     const [restaurants, setRestaurants] = useState([]);
+    
     useEffect(() => {
         (async () => {
             db.collection('restaurants')
@@ -30,12 +29,13 @@ export default function TopRestaurantes(props) {
                 });
                 setRestaurants(restoArrays);
             })
-            .catch( () => {
-               
+            .catch( () => {               
                 ToastAndroid.showWithGravity('Error al obtener los restaurantes.', ToastAndroid.SHORT, ToastAndroid.CENTER);
             });
         })()
-    }, []);
+    }, [
+
+    ]);
 
     return (
         <View>

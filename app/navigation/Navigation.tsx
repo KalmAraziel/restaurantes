@@ -48,7 +48,6 @@ const NavigationStacks = createBottomTabNavigator(
                 }
             })
         },
-        
         Cuenta: {
             screen: CuentaPageStacks,
             navigationOptions: () => ({
